@@ -9,6 +9,7 @@ import (
 type Handler struct {
 	api      *slack.Client
 	scm      *socketmode.Client
+	userID   string
 	settings Settings
 	db       *database.Handler
 }

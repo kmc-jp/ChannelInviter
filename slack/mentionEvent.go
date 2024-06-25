@@ -86,20 +86,24 @@ func (h *Handler) mentionHandler(ev *slackevents.AppMentionEvent) {
 					return
 				}
 
-				if userIDRegExp.MatchString(ev.Text) {
-					for _, match := range userIDRegExp.FindAllStringSubmatch(ev.Text, -1) {
-						err := h.inviteUser(match[1], channels)
-						if err != nil {
-							h.api.PostMessage(ev.Channel,
-								slack.MsgOptionText(
-									fmt.Sprintf("Error: inviteUsers(<@%s>) %v", match[1], err),
-									false,
-								),
-							)
-							return
-						}
+				usernum := 0
+				for _, match := range userIDRegExp.FindAllStringSubmatch(ev.Text, -1) {
+					if match[1] == h.userID {
+						continue
 					}
-				} else {
+					usernum++
+					err := h.inviteUser(match[1], channels)
+					if err != nil {
+						h.api.PostMessage(ev.Channel,
+							slack.MsgOptionText(
+								fmt.Sprintf("Error: inviteUsers(<@%s>): %v", match[1], err),
+								false,
+							),
+						)
+						return
+					}
+				}
+				if usernum == 0 {
 					err := h.inviteUser(ev.User, channels)
 					if err != nil {
 						h.api.PostMessage(ev.Channel,

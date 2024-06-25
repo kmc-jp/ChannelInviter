@@ -9,6 +9,10 @@ import (
 
 func (h *Handler) Start() error {
 	h.scm = socketmode.New(h.api)
+
+	res, _ := h.scm.AuthTest()
+	h.userID = res.UserID
+
 	go func() {
 		err := h.scm.Run()
 		if err != nil {
