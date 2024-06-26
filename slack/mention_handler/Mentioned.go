@@ -100,7 +100,6 @@ func (h *Handler) Mentioned(ev *slackevents.AppMentionEvent) {
 								false,
 							),
 						)
-						return
 					}
 				}
 				if usernum == 0 {
@@ -112,7 +111,6 @@ func (h *Handler) Mentioned(ev *slackevents.AppMentionEvent) {
 								true,
 							),
 						)
-						return
 					}
 				}
 
