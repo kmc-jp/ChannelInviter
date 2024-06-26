@@ -85,14 +85,13 @@ func (h *Handler) Executed(e slack.SlashCommand) {
 
 		for _, u := range userIDRegExp.FindAllStringSubmatch(e.Text, -1) {
 			for _, channel := range channels {
-				_, err := h.api.InviteUsersToConversation(strings.TrimLeft(channel, "#"), u[1])
-				if err != nil {
-					h.api.PostEphemeral(
-						e.ChannelID, e.UserID,
-						slack.MsgOptionText(fmt.Sprintf("Error: InviteUsersToConversation: %s", err), false),
-					)
-				}
+				h.api.InviteUsersToConversation(strings.TrimLeft(channel, "#"), u[1])
 			}
 		}
+
+		h.api.PostEphemeral(
+			e.ChannelID, e.UserID,
+			slack.MsgOptionText("done.", false),
+		)
 	}
 }

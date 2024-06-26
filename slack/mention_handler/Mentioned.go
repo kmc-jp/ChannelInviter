@@ -92,26 +92,10 @@ func (h *Handler) Mentioned(ev *slackevents.AppMentionEvent) {
 						continue
 					}
 					usernum++
-					err := h.inviteUser(match[1], channels)
-					if err != nil {
-						h.api.PostMessage(ev.Channel,
-							slack.MsgOptionText(
-								fmt.Sprintf("Error: inviteUsers(<@%s>): %v", match[1], err),
-								false,
-							),
-						)
-					}
+					h.inviteUser(match[1], channels)
 				}
 				if usernum == 0 {
-					err := h.inviteUser(ev.User, channels)
-					if err != nil {
-						h.api.PostMessage(ev.Channel,
-							slack.MsgOptionText(
-								fmt.Sprintf("Error: inviteUser %v", err),
-								true,
-							),
-						)
-					}
+					h.inviteUser(ev.User, channels)
 				}
 
 			}
