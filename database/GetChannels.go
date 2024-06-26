@@ -7,10 +7,10 @@ import (
 
 var ErrorNotFound = fmt.Errorf("NotFound")
 
-func (h *Handler) GetChannels(KeyMessage string) (channelIDs []string, err error) {
+func (h *Handler) GetChannels(Keyword string) (channelIDs []string, err error) {
 	rows, err := h.db.Query(
-		"SELECT ID, ChannelIDs, KeyMessage FROM channels WHERE KeyMessage = ?",
-		KeyMessage,
+		"SELECT ID, ChannelIDs, Keyword FROM channels WHERE Keyword = ?",
+		Keyword,
 	)
 
 	if err != nil {
@@ -23,8 +23,8 @@ func (h *Handler) GetChannels(KeyMessage string) (channelIDs []string, err error
 	for rows.Next() {
 		var id int
 		var channelIDstring string
-		var KeyMessage string
-		err = rows.Scan(&id, &channelIDstring, &KeyMessage)
+		var Keyword string
+		err = rows.Scan(&id, &channelIDstring, &Keyword)
 		if err != nil {
 			return nil, fmt.Errorf("Scan: %w", err)
 		}

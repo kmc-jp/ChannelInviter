@@ -1,4 +1,4 @@
-package slack
+package mentionhandler
 
 import (
 	"fmt"
@@ -7,9 +7,9 @@ import (
 	"github.com/slack-go/slack/slackevents"
 )
 
-func (h *Handler) deleteChannels(ev *slackevents.AppMentionEvent) error {
-	submatch := deleteChannelRegExp.FindAllStringSubmatch(ev.Text, 1)
-	KeyMessage := submatch[0][1]
+func (h *Handler) removeChannels(ev *slackevents.AppMentionEvent) error {
+	submatch := removeChannelRegExp.FindAllStringSubmatch(ev.Text, 1)
+	Keyword := submatch[0][1]
 	delChannelIDs := []string{}
 
 	for _, channel := range strings.Split(submatch[0][2], "\n") {
@@ -18,12 +18,12 @@ func (h *Handler) deleteChannels(ev *slackevents.AppMentionEvent) error {
 		}
 	}
 
-	err := h.db.DeleteChannels(KeyMessage, delChannelIDs...)
+	err := h.db.RemoveChannels(Keyword, delChannelIDs...)
 	if err != nil {
-		return fmt.Errorf("DeleteChannels: %w", err)
+		return fmt.Errorf("removeChannels: %w", err)
 	}
 
-	err = h.sendSetChannels(KeyMessage, ev.Channel)
+	err = h.sendSetChannels(Keyword, ev.Channel)
 	if err != nil {
 		return fmt.Errorf("getChannels: %w", err)
 	}

@@ -1,4 +1,4 @@
-package slack
+package mentionhandler
 
 import (
 	"fmt"
@@ -10,15 +10,15 @@ import (
 )
 
 var addChannelRegExp = regexp.MustCompile(`AddChannels?\s+(\S+)\n+((<#\S+>\n?)+)`)
-var deleteChannelRegExp = regexp.MustCompile(`DeleteChannels?\s+(\S+)\n+((<#\S+>\n?)+)`)
+var removeChannelRegExp = regexp.MustCompile(`RemoveChannels?\s+(\S+)\n+((<#\S+>\n?)+)`)
 var getChannelRegExp = regexp.MustCompile(`GetChannels?\s+(\S+)`)
 
-var channelIDRegExp = regexp.MustCompile(`<(#[A-Z0-9]+)|.*`)
+var channelIDRegExp = regexp.MustCompile(`<(#[A-Z0-9]+)[^\s]*>`)
 var userIDRegExp = regexp.MustCompile(`<@([A-Z0-9]+)>`)
 
-var ReservedWords = []string{"AddChannels", "DeleteChannels", "GetChannels"}
+var ReservedWords = []string{"AddChannels", "RemoveChannels", "GetChannels"}
 
-func (h *Handler) mentionHandler(ev *slackevents.AppMentionEvent) {
+func (h *Handler) Mentioned(ev *slackevents.AppMentionEvent) {
 	if addChannelRegExp.MatchString(ev.Text) {
 		err := h.addChannels(ev)
 		if err != nil {
@@ -33,8 +33,8 @@ func (h *Handler) mentionHandler(ev *slackevents.AppMentionEvent) {
 		return
 	}
 
-	if deleteChannelRegExp.MatchString(ev.Text) {
-		err := h.deleteChannels(ev)
+	if removeChannelRegExp.MatchString(ev.Text) {
+		err := h.removeChannels(ev)
 		if err != nil {
 			h.api.PostMessage(ev.Channel,
 				slack.MsgOptionText(
@@ -61,7 +61,7 @@ func (h *Handler) mentionHandler(ev *slackevents.AppMentionEvent) {
 		return
 	}
 
-	KeyMessages, err := h.db.GetKeyMessages()
+	Keywords, err := h.db.GetKeywords()
 	if err != nil {
 		h.api.PostMessage(ev.Channel,
 			slack.MsgOptionText(
@@ -73,7 +73,7 @@ func (h *Handler) mentionHandler(ev *slackevents.AppMentionEvent) {
 	}
 
 	for _, phrase := range strings.Split(ev.Text, " ") {
-		for _, key := range KeyMessages {
+		for _, key := range Keywords {
 			if key == phrase {
 				channels, err := h.db.GetChannels(key)
 				if err != nil {

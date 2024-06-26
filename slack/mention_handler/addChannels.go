@@ -1,19 +1,20 @@
-package slack
+package mentionhandler
 
 import (
 	"fmt"
 	"strings"
 
+	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
 
 func (h *Handler) addChannels(ev *slackevents.AppMentionEvent) error {
 	submatch := addChannelRegExp.FindAllStringSubmatch(ev.Text, 1)
-	KeyMessage := submatch[0][1]
+	Keyword := submatch[0][1]
 	newChannelIDs := []string{}
 
 	for _, rkey := range ReservedWords {
-		if KeyMessage == rkey {
+		if Keyword == rkey {
 			return fmt.Errorf("Reserved")
 		}
 	}
@@ -24,15 +25,22 @@ func (h *Handler) addChannels(ev *slackevents.AppMentionEvent) error {
 		}
 	}
 
-	err := h.db.AddChannels(KeyMessage, newChannelIDs...)
+	err := h.db.AddChannels(Keyword, newChannelIDs...)
 	if err != nil {
 		return fmt.Errorf("AddChannels: %w", err)
 	}
 
-	err = h.sendSetChannels(KeyMessage, ev.Channel)
+	err = h.sendSetChannels(Keyword, ev.Channel)
 	if err != nil {
 		return fmt.Errorf("getChannels: %w", err)
 	}
+
+	h.api.PostMessage(ev.Channel,
+		slack.MsgOptionText(
+			fmt.Sprintf("Hint: You have to invite <@%s> to the channels before using this.", h.userID),
+			false,
+		),
+	)
 
 	return nil
 }

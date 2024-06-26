@@ -1,4 +1,4 @@
-package slack
+package mentionhandler
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 	"github.com/slack-go/slack"
 )
 
-func (h *Handler) sendSetChannels(KeyMessage string, channel string) error {
-	channelIDs, err := h.db.GetChannels(KeyMessage)
+func (h *Handler) sendSetChannels(Keyword string, channel string) error {
+	channelIDs, err := h.db.GetChannels(Keyword)
 	if err == database.ErrorNotFound {
 		h.api.PostMessage(channel,
 			slack.MsgOptionText(

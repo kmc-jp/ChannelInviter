@@ -28,7 +28,7 @@ func (h *Handler) CreateTable() error {
 	query := `CREATE TABLE IF NOT EXISTS channels (
         ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         ChannelIDs TEXT,
-		KeyMessage TEXT
+		Keyword TEXT
 	);`
 
 	_, err := h.db.Exec(query)
