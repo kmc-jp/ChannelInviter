@@ -76,6 +76,6 @@
 }
 ```
 
-為了使用Socket mode, App Level Token也你必須得到.
+為了使用 Socket 模式，你必須獲取 App Level Token。
 
 然後, 請下載此儲存庫, 修改 `settings/settings.yaml`.
