@@ -63,15 +63,13 @@ func (h *Handler) Executed(e slack.SlashCommand) {
 			return
 		}
 		for _, channel := range channels {
-			_, err := h.api.InviteUsersToConversation(strings.TrimLeft(channel, "#"), e.UserID)
-			if err != nil {
-				h.api.PostEphemeral(
-					e.ChannelID, e.UserID,
-					slack.MsgOptionText(fmt.Sprintf("Error: InviteUsersToConversation: %s", err), false),
-				)
-			}
-
+			h.api.InviteUsersToConversation(strings.TrimLeft(channel, "#"), e.UserID)
 		}
+
+		h.api.PostEphemeral(
+			e.ChannelID, e.UserID,
+			slack.MsgOptionText("done.", false),
+		)
 	case "/inviterinvite":
 		Keyword := strings.Split(strings.TrimSpace(e.Text), " ")[0]
 		channels, err := h.db.GetChannels(Keyword)
