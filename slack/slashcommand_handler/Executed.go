@@ -53,7 +53,7 @@ func (h *Handler) Executed(e slack.SlashCommand) {
 			return
 		}
 	case "/inviterjoin":
-		Keyword := strings.Split(e.Text, "")[0]
+		Keyword := strings.Split(strings.TrimSpace(e.Text), " ")[0]
 		channels, err := h.db.GetChannels(Keyword)
 		if err != nil {
 			h.api.PostEphemeral(
@@ -73,7 +73,7 @@ func (h *Handler) Executed(e slack.SlashCommand) {
 
 		}
 	case "/inviterinvite":
-		Keyword := strings.Split(e.Text, "")[0]
+		Keyword := strings.Split(strings.TrimSpace(e.Text), " ")[0]
 		channels, err := h.db.GetChannels(Keyword)
 		if err != nil {
 			h.api.PostEphemeral(
