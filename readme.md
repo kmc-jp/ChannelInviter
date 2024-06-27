@@ -51,12 +51,13 @@
                 "app_mentions:read",
                 "channels:manage",
                 "channels:write.invites",
+                "chat:write",
+                "commands",
                 "groups:write",
                 "groups:write.invites",
                 "im:write",
                 "mpim:write",
-                "chat:write",
-                "commands"
+                "chat:write.public"
             ]
         }
     },
