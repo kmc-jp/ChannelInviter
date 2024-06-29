@@ -16,7 +16,6 @@ var userIDRegExp = regexp.MustCompile(`<@([A-Z0-9]+)\|[^@]*>`)
 var ReservedWords = []string{"AddChannels", "DeleteChannels", "GetChannels"}
 
 func (h *Handler) Executed(e slack.SlashCommand) {
-	fmt.Printf("%+v\n", e)
 	switch e.Command {
 	case "/inviteraddchannels":
 		if !KeywordAndChannelsRegExp.MatchString(e.Text) {
