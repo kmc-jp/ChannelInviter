@@ -23,25 +23,25 @@
                 "command": "/inviterinvite",
                 "description": "Invite user to channels registered to the Keyword",
                 "usage_hint": "Keyword User1 User2...",
-                "should_escape": false
+                "should_escape": true
             },
             {
                 "command": "/inviterjoin",
                 "description": "Join channels registered to the Keyword",
                 "usage_hint": "Keyword",
-                "should_escape": false
+                "should_escape": true
             },
             {
                 "command": "/inviteraddchannels",
                 "description": "Register channels to the keyword",
                 "usage_hint": "Keyword #Channel1 #Channel2...",
-                "should_escape": false
+                "should_escape": true
             },
             {
                 "command": "/inviterremovechannels",
                 "description": "Remove channels registered to the keyword",
                 "usage_hint": "Keyword #Channel1 #Channel2...",
-                "should_escape": false
+                "should_escape": true
             }
         ]
     },
@@ -51,12 +51,13 @@
                 "app_mentions:read",
                 "channels:manage",
                 "channels:write.invites",
+                "chat:write",
+                "commands",
                 "groups:write",
                 "groups:write.invites",
                 "im:write",
                 "mpim:write",
-                "chat:write",
-                "commands"
+                "chat:write.public"
             ]
         }
     },
