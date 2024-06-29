@@ -11,7 +11,7 @@ import (
 var KeywordAndChannelsRegExp = regexp.MustCompile(`(\S+)\s+((<#\S+>\s*)+)`)
 
 var channelIDRegExp = regexp.MustCompile(`<(#[A-Z0-9]+)[^\s]*>`)
-var userIDRegExp = regexp.MustCompile(`<@([A-Z0-9]+)>`)
+var userIDRegExp = regexp.MustCompile(`<@([A-Z0-9]+)\|[^@]*>`)
 
 var ReservedWords = []string{"AddChannels", "DeleteChannels", "GetChannels"}
 
